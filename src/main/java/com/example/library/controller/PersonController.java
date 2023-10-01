@@ -40,7 +40,7 @@ public class PersonController {
         personService.save(new PersonEntity(fullName, date));
         log.info("New person added to database");
 
-        return "redirect:/";
+        return "redirect:/person";
     }
 
     @GetMapping("/person/edit")
@@ -57,7 +57,7 @@ public class PersonController {
         personService.update(id, new PersonEntity(fullName, date));
         log.info("The person's data was edited");
 
-        return "redirect:/";
+        return "redirect:/person";
     }
 
     @GetMapping("/person/delete")
@@ -72,6 +72,6 @@ public class PersonController {
         personService.deleteById(id);
         log.info("The person was deleted");
 
-        return "redirect:/";
+        return "redirect:/person";
     }
 }

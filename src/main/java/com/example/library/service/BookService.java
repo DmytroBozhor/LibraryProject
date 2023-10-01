@@ -39,4 +39,8 @@ public class BookService {
     public void delete(BookEntity book) {
         bookRepository.delete(book);
     }
+
+    public void deleteById(int id){
+        bookRepository.deleteById(id);
+    }
 }
