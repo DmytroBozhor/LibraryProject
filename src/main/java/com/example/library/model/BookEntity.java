@@ -26,4 +26,10 @@ public class BookEntity {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     PersonEntity owner;
+
+    public BookEntity(String title, String author, int releaseYear) {
+        this.title = title;
+        this.author = author;
+        this.releaseYear = releaseYear;
+    }
 }

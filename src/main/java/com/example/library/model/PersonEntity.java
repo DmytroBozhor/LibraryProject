@@ -28,4 +28,9 @@ public class PersonEntity {
 
     @OneToMany(mappedBy = "owner")
     List<BookEntity> books;
+
+    public PersonEntity(String fullName, Date birthday) {
+        this.fullName = fullName;
+        this.birthday = birthday;
+    }
 }

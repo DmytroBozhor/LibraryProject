@@ -4,10 +4,12 @@ import com.example.library.model.PersonEntity;
 import com.example.library.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PersonService {
 
     private final PersonRepository personRepository;
@@ -36,5 +38,9 @@ public class PersonService {
 
     public void delete(PersonEntity person) {
         personRepository.delete(person);
+    }
+
+    public void deleteById(int id){
+        personRepository.deleteById(id);
     }
 }
