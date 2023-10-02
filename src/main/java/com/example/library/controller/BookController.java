@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
@@ -21,17 +23,17 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @GetMapping("/book")
+    @GetMapping
     public String bookMainPage(){
-        return "book_main_page";
+        return "book/main_page";
     }
 
-    @GetMapping("/book/new")
+    @GetMapping("/new")
     public String bookRegisterGet(){
-        return "book_register";
+        return "book/register";
     }
 
-    @PostMapping("/book/new")
+    @PostMapping("/new")
     public String bookRegisterPost(HttpServletRequest request) {
         String title = request.getParameter("title");
         String author = request.getParameter("author");
@@ -40,15 +42,15 @@ public class BookController {
         bookService.save(new BookEntity(title, author, releaseYear));
         log.info("A new book has been added");
 
-        return "redirect:/book";
+        return "redirect:/books";
     }
 
-    @GetMapping("/book/edit")
+    @GetMapping("/edit")
     public String bookEditGet(){
-        return "book_edit";
+        return "book/edit";
     }
 
-    @PostMapping("/book/edit")
+    @PostMapping("/edit")
     public String bookEditPost(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         String title = request.getParameter("title");
@@ -58,22 +60,22 @@ public class BookController {
         bookService.update(id, new BookEntity(title, author, releaseYear));
         log.info("The book's data has been edited");
 
-        return "redirect:/book";
+        return "redirect:/books";
     }
 
-    @GetMapping("/book/delete")
+    @GetMapping("/delete")
     public String bookDeleteGet(){
-        return "book_delete";
+        return "book/delete";
     }
 
-    @PostMapping("/book/delete")
+    @PostMapping("/delete")
     public String bookDeletePost(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
 
         bookService.deleteById(id);
         log.info("The book has been deleted");
 
-        return "redirect:/book";
+        return "redirect:/books";
     }
 
 }

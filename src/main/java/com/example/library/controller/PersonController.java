@@ -7,12 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.sql.Date;
 
 @Controller
+@RequestMapping("/people")
 public class PersonController {
     private final PersonService personService;
     private static final Logger log = LoggerFactory.getLogger(PersonController.class);
@@ -22,17 +26,24 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @GetMapping("/person")
-    public String personMainPage() {
-        return "person_main_page";
+    @GetMapping
+    public String personMainPage(Model model) {
+        model.addAttribute("people", personService.findAll());
+        return "person/main_page";
     }
 
-    @GetMapping("/person/new")
+    @GetMapping("/{id}")
+    public String getPersonPageById(@PathVariable("id") int id, Model model) {
+        model.addAttribute("person", personService.getById(id));
+        return "person/page_by_id";
+    }
+
+    @GetMapping("/new")
     public String personRegisterGet() {
-        return "person_register";
+        return "person/register";
     }
 
-    @PostMapping("/person/new")
+    @PostMapping("/new")
     public String personRegisterPost(HttpServletRequest request) {
         String fullName = request.getParameter("fullName");
         Date date = Date.valueOf(request.getParameter("birthday"));
@@ -40,15 +51,15 @@ public class PersonController {
         personService.save(new PersonEntity(fullName, date));
         log.info("New person added to database");
 
-        return "redirect:/person";
+        return "redirect:/people";
     }
 
-    @GetMapping("/person/edit")
+    @GetMapping("/edit")
     public String personEditGet() {
-        return "person_edit";
+        return "person/edit";
     }
 
-    @PostMapping("/person/edit")
+    @PostMapping("/edit")
     public String personEditPost(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
         String fullName = request.getParameter("fullName");
@@ -57,21 +68,21 @@ public class PersonController {
         personService.update(id, new PersonEntity(fullName, date));
         log.info("The person's data was edited");
 
-        return "redirect:/person";
+        return "redirect:/people";
     }
 
-    @GetMapping("/person/delete")
+    @GetMapping("/delete")
     public String personDeleteGet() {
-        return "person_delete";
+        return "person/delete";
     }
 
-    @PostMapping("/person/delete")
+    @PostMapping("/delete")
     public String personDeletePost(HttpServletRequest request) {
         int id = Integer.parseInt(request.getParameter("id"));
 
         personService.deleteById(id);
         log.info("The person was deleted");
 
-        return "redirect:/person";
+        return "redirect:/people";
     }
 }
