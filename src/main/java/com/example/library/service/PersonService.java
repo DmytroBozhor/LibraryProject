@@ -1,5 +1,6 @@
 package com.example.library.service;
 
+import com.example.library.model.BookEntity;
 import com.example.library.model.PersonEntity;
 import com.example.library.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;

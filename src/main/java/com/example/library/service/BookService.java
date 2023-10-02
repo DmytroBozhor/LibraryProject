@@ -43,4 +43,8 @@ public class BookService {
     public void deleteById(int id){
         bookRepository.deleteById(id);
     }
+
+    public List<BookEntity> getBooksByPersonId(int id){
+        return bookRepository.getAllByOwnerId(id);
+    }
 }

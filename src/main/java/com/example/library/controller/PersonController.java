@@ -1,6 +1,7 @@
 package com.example.library.controller;
 
 import com.example.library.model.PersonEntity;
+import com.example.library.service.BookService;
 import com.example.library.service.PersonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -19,11 +20,13 @@ import java.sql.Date;
 @RequestMapping("/people")
 public class PersonController {
     private final PersonService personService;
+    private final BookService bookService;
     private static final Logger log = LoggerFactory.getLogger(PersonController.class);
 
     @Autowired
-    public PersonController(PersonService personService) {
+    public PersonController(PersonService personService, BookService bookService) {
         this.personService = personService;
+        this.bookService = bookService;
     }
 
     @GetMapping
@@ -35,6 +38,7 @@ public class PersonController {
     @GetMapping("/{id}")
     public String getPersonPageById(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personService.getById(id));
+        model.addAttribute("books", bookService.getBooksByPersonId(id));
         return "person/page_by_id";
     }
 
