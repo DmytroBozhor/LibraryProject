@@ -7,9 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
@@ -24,12 +29,21 @@ public class BookController {
     }
 
     @GetMapping
-    public String bookMainPage(){
+    public String bookMainPage(Model model) {
+        model.addAttribute("books", bookService.findAll());
+
         return "book/main_page";
     }
 
+    @GetMapping("/{id}")
+    public String bookPageById(@PathVariable("id") int id, Model model) {
+        model.addAttribute("book", bookService.getById(id));
+        model.addAttribute("bookOwner", bookService.getById(id).getOwner());
+        return "book/page_by_id";
+    }
+
     @GetMapping("/new")
-    public String bookRegisterGet(){
+    public String bookRegisterGet() {
         return "book/register";
     }
 
@@ -46,7 +60,7 @@ public class BookController {
     }
 
     @GetMapping("/edit")
-    public String bookEditGet(){
+    public String bookEditGet() {
         return "book/edit";
     }
 
@@ -64,7 +78,7 @@ public class BookController {
     }
 
     @GetMapping("/delete")
-    public String bookDeleteGet(){
+    public String bookDeleteGet() {
         return "book/delete";
     }
 
