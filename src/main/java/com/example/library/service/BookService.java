@@ -1,6 +1,7 @@
 package com.example.library.service;
 
 import com.example.library.model.BookEntity;
+import com.example.library.model.PersonEntity;
 import com.example.library.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,11 +41,17 @@ public class BookService {
         bookRepository.delete(book);
     }
 
-    public void deleteById(int id){
+    public void deleteById(int id) {
         bookRepository.deleteById(id);
     }
 
-    public List<BookEntity> getBooksByPersonId(int id){
+    public List<BookEntity> getBooksByPersonId(int id) {
         return bookRepository.getAllByOwnerId(id);
+    }
+
+    public void assignOwner(int id, PersonEntity person) {
+        BookEntity book = bookRepository.getReferenceById(id);
+        book.setOwner(person);
+        bookRepository.save(book);
     }
 }

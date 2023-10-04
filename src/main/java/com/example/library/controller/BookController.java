@@ -1,31 +1,29 @@
 package com.example.library.controller;
 
 import com.example.library.model.BookEntity;
+import com.example.library.model.PersonEntity;
 import com.example.library.service.BookService;
+import com.example.library.service.PersonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
     private final BookService bookService;
+    private final PersonService personService;
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, PersonService personService) {
         this.bookService = bookService;
+        this.personService = personService;
     }
 
     @GetMapping
@@ -39,7 +37,20 @@ public class BookController {
     public String bookPageById(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookService.getById(id));
         model.addAttribute("bookOwner", bookService.getById(id).getOwner());
+        model.addAttribute("people", bookService.findAll());
         return "book/page_by_id";
+    }
+
+    @PostMapping("/{id}")
+    public String bookPageByIdPost(@PathVariable("id") int id) {
+        bookService.assignOwner(id, null);
+        return "redirect:/books";
+    }
+
+    @PostMapping("/{id}/assign")
+    public String assignBookToPerson(@PathVariable("id") int id, @ModelAttribute("person") PersonEntity person) {
+        bookService.assignOwner(id, person);
+        return "redirect:/books";
     }
 
     @GetMapping("/new")

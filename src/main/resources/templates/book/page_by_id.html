@@ -11,15 +11,27 @@
 
 <div th:if="${bookOwner==null}">
     <p>The book is free to borrow</p>
+
+    <form th:action="@{/books/{id}/assign(id=${book.getId()})}" method="post">
+        <label for="person">Assign book to the person</label>
+        <select th:object="${person}" th:field="*{id}" id="person">
+            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}">
+            </option>
+        </select>
+        <input type="submit" value="Assign book">
+    </form>
 </div>
 
 <div th:if="${!(bookOwner==null)}">
-    <hr>
     <p>Owner:</p>
     <p th:text="${bookOwner.getFullName() + ', ' + bookOwner.getBirthday()}">book</p>
-    <hr>
+
+    <form th:action="@{/books/{id}(id=${book.getId()})}" method="post">
+        <input type="submit" value="Set free">
+    </form>
 </div>
 
+<hr>
 
 </body>
 </html>

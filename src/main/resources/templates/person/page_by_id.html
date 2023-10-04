@@ -14,14 +14,13 @@
 </div>
 
 <div th:if="${!books.isEmpty()}">
-    <hr>
     <p>Books:</p>
     <table th:each="book : ${books}">
         <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getReleaseYear()}">book</p>
     </table>
-    <hr>
 </div>
 
+<hr>
 
 </body>
 </html>
